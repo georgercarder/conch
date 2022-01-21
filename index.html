@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Conch</title>
+</head>
+<body>
+  <div style="cursor:pointer">click here</div>
+<video id="myVideo" width="320" height="240" autoplay muted>
+  <source src="/lifting.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+<video id="myVideo2" width="320" height="240" autoplay muted>
+  <source src="/lifting.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+<video id="myVideo3" width="320" height="240" autoplay muted>
+  <source src="/lifting.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+<video id="myVideo4" width="320" height="240" autoplay muted>
+  <source src="/lifting.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+<script>
+  let numSamples = 2000; // 1000
+  var video=document.getElementById("myVideo");
+  var video2=document.getElementById("myVideo2");
+  var video3=document.getElementById("myVideo3");
+  var video4=document.getElementById("myVideo4");
+
+  function unmuteOnce() {
+    if (video.muted) {
+      video.muted = !video.muted;
+      video2.muted = !video2.muted;
+      video3.muted = !video3.muted;
+      video4.muted = !video4.muted;
+    }
+  }
+  document.body.addEventListener("click", function() {
+      unmuteOnce();
+      video.pause();
+      video2.pause();
+      video3.pause();
+      video4.pause();
+      var duration = video.duration;
+      var sampleLength = duration/numSamples;
+      var stopVideoAfter=(sampleLength) * 1000;
+      var idx = 0;
+      
+      var loop = function(v) {
+        idx++;
+        var rand = Math.random()*duration;
+        v.currentTime = rand; 
+        v.play();
+        setTimeout(function(){
+          v.pause();
+          if (idx < numSamples/2) {
+            loop(v);
+          }
+        }, stopVideoAfter);
+      }
+      loop(video);
+      setTimeout(function(){loop(video2);}, stopVideoAfter/4);
+      setTimeout(function(){loop(video3);}, 2*stopVideoAfter/4);
+      setTimeout(function(){loop(video4);}, 3*stopVideoAfter/4);
+    });
+</script>
+</body>
+</html>
