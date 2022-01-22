@@ -5,7 +5,7 @@
 </head>
 <body>
   <div style="cursor:pointer">click here</div>
-<video id="myVideo" width="320" height="240" autoplay muted>
+<video id="myVideo1" width="320" height="240" autoplay muted>
   <source src="/lifting.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
@@ -27,46 +27,44 @@
   // TODO make video src generic
   // TODO make number of frames generic
   // TODO make src compatible with ipfs
-  var video=document.getElementById("myVideo");
-  var video2=document.getElementById("myVideo2");
-  var video3=document.getElementById("myVideo3");
-  var video4=document.getElementById("myVideo4");
-
+  var videos = [];
+  for (var i=1; i<5; i++) {
+      videos.push(document.getElementById("myVideo"+i.toString()));
+  }
   function unmuteOnce() {
-    if (video.muted) {
-      video.muted = !video.muted;
-      video2.muted = !video2.muted;
-      video3.muted = !video3.muted;
-      video4.muted = !video4.muted;
+    if (videos[0].muted) {
+      for (var i=0; i<videos.length; i++) {
+          videos[i].muted = false;
+      }
+    }
+  }
+  function pauseAll(videos) {
+    for (var i=0; i<vidoes.length; i++) {
+      videos[i].pause();
+    }
+  }
+  function startVideos(videos) {
+    for (var i=0; i<videos.length; i++) {
+      setTimeout(function(){loop(videos[i]);}, i*stopVideoAfter/videos.length);
     }
   }
   document.body.addEventListener("click", function() {
       unmuteOnce();
-      video.pause();
-      video2.pause();
-      video3.pause();
-      video4.pause();
+      pauseAll(videos);
       var duration = video.duration;
       var sampleLength = duration/numSamples;
       var stopVideoAfter=(sampleLength) * 1000;
-      var idx = 0;
       
       var loop = function(v) {
-        idx++;
         var rand = Math.random()*duration;
         v.currentTime = rand; 
         v.play();
         setTimeout(function(){
           v.pause();
-          if (idx < numSamples/2) {
-            loop(v);
-          }
+          loop(v);
         }, stopVideoAfter);
       }
-      loop(video);
-      setTimeout(function(){loop(video2);}, stopVideoAfter/4);
-      setTimeout(function(){loop(video3);}, 2*stopVideoAfter/4);
-      setTimeout(function(){loop(video4);}, 3*stopVideoAfter/4);
+      startVideos(videos);
     });
 </script>
 </body>
